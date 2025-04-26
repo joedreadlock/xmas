@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-4">
+  <h1 class="h3 mb-3">Gift Registry</h1>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Preview</th>
+          <th>Item</th>
+          <th>Description/URL</th>
+          <th>Claimed By</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for gift in gifts %}
+        <tr>
+          <td>
+            {% if gift.preview_image_url %}
+              <img src="{{ gift.preview_image_url }}" alt="Preview" class="img-fluid" style="max-width:75px;">
+            {% endif %}
+          </td>
+          <td>{{ gift.name }}</td>
+          <td>
+            {% if gift.description_or_url %}
+              <a href="{{ gift.description_or_url }}" target="_blank">Link</a>
+            {% endif %}
+          </td>
+          <td>{{ display_claims(gift)|join(', ') or '—' }}</td>
+          <td>
+            <form method="post" action="{{ url_for('claim_gift', gift_id=gift.id) }}">
+              <button class="btn btn-sm btn-primary">Claim</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <a href="{{ url_for('add_gift') }}" class="btn btn-success mt-3">Add a Gift</a>
+</div>
+{% endblock %}

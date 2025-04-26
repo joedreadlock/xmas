@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-4">
+  <h1 class="h3 mb-3">Add a Gift</h1>
+  <form method="post">
+    <div class="mb-3">
+      <label for="name" class="form-label">Gift Name</label>
+      <input type="text" class="form-control" id="name" name="name" required>
+    </div>
+    <div class="mb-3">
+      <label for="url" class="form-label">Description or URL</label>
+      <input type="url" class="form-control" id="url" name="url">
+    </div>
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" id="parents_only" name="parents_only">
+      <label class="form-check-label" for="parents_only">
+        Parents only
+      </label>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Gift</button>
+  </form>
+</div>
+{% endblock %}
