@@ -4,7 +4,6 @@ from sqlalchemy import Boolean, Column, DateTime, ForeignKey, Integer, String, T
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# Initialize SQLAlchemy (in app.py you'll call db.init_app)
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -13,7 +12,7 @@ class User(db.Model):
     name = Column(String(100), nullable=False)
     email = Column(String(120), unique=True, nullable=False)
     password_hash = Column(String(128), nullable=False)
-    role = Column(String(20), nullable=False, default='member')  # 'parent' or 'member'
+    role = Column(String(20), nullable=False, default='member')
 
     gifts_entered = relationship('Gift', back_populates='entered_by_user')
     claims = relationship('Claim', back_populates='claimed_by_user')
@@ -52,5 +51,5 @@ class Notification(db.Model):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     gift_id = Column(Integer, ForeignKey('gifts.id'), nullable=True)
-    type = Column(String(50), nullable=False)  # 'new_gift', 'claimed_gift', 'deadline_warning'
+    type = Column(String(50), nullable=False)
     date_sent = Column(DateTime, default=datetime.utcnow)

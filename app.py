@@ -29,7 +29,7 @@ def fetch_preview_image(url):
             return og['content']
         img = soup.find('img')
         return img['src'] if img and img.get('src') else None
-    except Exception:
+    except:
         return None
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -56,7 +56,7 @@ def register():
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    if request.method == 'POST'):
+    if request.method == 'POST':
         email = request.form['email'].lower()
         password = request.form['password']
         user = User.query.filter_by(email=email).first()
@@ -79,13 +79,11 @@ def index():
         gifts = Gift.query.order_by(Gift.date_entered.desc()).all()
     else:
         gifts = Gift.query.filter_by(parents_only=False).order_by(Gift.date_entered.desc()).all()
-
     def display_claims(gift):
         if not gift.claims:
             return []
         claimant = gift.claims[-1].claimed_by_user
         return ['Anonymous'] if current_user.role != 'parent' else [claimant.name]
-
     return render_template('index.html', gifts=gifts, display_claims=display_claims)
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -127,5 +125,5 @@ if __name__ == '__main__':
             admin.set_password(admin_password)
             db.session.add(admin)
             db.session.commit()
-            print(f"Seeded admin user '{ADMIN_EMAIL}' with default password.")
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)
